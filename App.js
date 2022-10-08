@@ -7,7 +7,7 @@ import ProfilScreen from './Screens/Profil';
 
 const Tab = createBottomTabNavigator();
 
-export default function MyTabs() {
+export default function MyTabs() {j
   return (
     <NavigationContainer>
       <Tab.Navigator initialRouteName='Home' screenOptions={{
