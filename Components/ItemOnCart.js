@@ -2,53 +2,60 @@ import * as React from 'react';
 import { StyleSheet,Text,View,Image, TouchableOpacity } from 'react-native';
 
 export default App=(props)=>{
+    const [Quantity, setQuantity]=React.useState(0);
     return(
-        <>
-            <View style={styles.container}>
-                <View style={styles.ProductImgSection}>
-                    <Image source={{uri:props.Image}} style={styles.ProductImg}/>
+        <View style={styles.container}>
+            <View style={styles.ProductImgSection}>
+                <Image source={{uri:props.Image}} style={styles.ProductImg}/>
+            </View>
+            <View style={styles.productDetails}>
+                <Text style={styles.productTitle}>Beosound 1</Text>
+                <View style={styles.specifications}>
+                    <Text>Color</Text>
+                    <View style={{
+                        width:20,
+                        backgroundColor:'black',
+                        borderRadius:3,
+                        marginLeft:5,
+                        marginRight:15
+                        }}></View>
+                    <Text>Size</Text>
+                    <View style={{
+                        width:20,
+                        backgroundColor:'#fff',
+                        borderRadius:3,
+                        marginLeft:5,
+                        marginRight:15
+                        }}>
+                        <Text style={{textAlign:'center'}}>S</Text>
+                    </View>
                 </View>
-                <View style={styles.productDetails}>
-                    <Text style={styles.productTitle}>Beosound 1</Text>
-                    <View style={styles.specifications}>
-                        <Text>Color</Text>
-                        <View style={{
-                            width:20,
-                            backgroundColor:'black',
-                            borderRadius:3,
-                            marginLeft:5,
-                            marginRight:15
-                            }}></View>
-                        <Text>Size</Text>
-                        <View style={{
-                            width:20,
-                            backgroundColor:'#fff',
-                            borderRadius:3,
-                            marginLeft:5,
-                            marginRight:15
-                            }}>
-                            <Text style={{textAlign:'center'}}>S</Text>
+                <Text style={styles.cost}>$1,600</Text>
+                <View style={styles.Quantity}>
+                    <TouchableOpacity onPress={()=>{
+                        setQuantity(Quantity+1);
+                    }}>
+                        <Image source={require("../assets/add.png")} style={styles.AddRemoveItem}/>
+                    </TouchableOpacity>
+                    <View style={{
+                        width:30,
+                        backgroundColor:'#fff',
+                        borderRadius:3,
+                        marginLeft:5,
+                        marginRight:5,
+                        justifyContent:'center',
+                        alignItems:'center'
+                        }}>
+                            <Text style={styles.QuantityNum}>{Quantity}</Text>
                         </View>
-                    </View>
-                    <Text style={styles.cost}>$1,600</Text>
-                    <View style={styles.Quantity}>
-                        <TouchableOpacity><Image source={require("../assets/add.png")} style={styles.AddRemoveItem}/></TouchableOpacity>
-                        <View style={{
-                            width:30,
-                            backgroundColor:'#fff',
-                            borderRadius:3,
-                            marginLeft:5,
-                            marginRight:5,
-                            justifyContent:'center',
-                            alignItems:'center'
-                            }}>
-                                <Text style={styles.QuantityNum}>2</Text>
-                            </View>
-                            <TouchableOpacity><Image source={require("../assets/minus.png")} style={styles.AddRemoveItem}/></TouchableOpacity>
-                    </View>
+                        <TouchableOpacity onPress={()=>{
+                        setQuantity(Quantity-1);
+                    }}>
+                            <Image source={require("../assets/minus.png")} style={styles.AddRemoveItem}/>
+                        </TouchableOpacity>
                 </View>
             </View>
-        </>
+        </View>
     )
 }
 
@@ -88,8 +95,7 @@ const styles = StyleSheet.create({
     },
     specifications: {
         marginBottom:10,
-        flexDirection:'row',
-        justifyContent:'start'
+        flexDirection:'row'
     },
     cost: {
         marginBottom:10,
