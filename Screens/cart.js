@@ -32,7 +32,7 @@ export default App=(props)=>{
                     <Text style={styles.TotalSectionText}>Total</Text>
                     <Text style={styles.TotalSectionText}>$9,800</Text>
                 </View>
-                <GoldBtn title="CHECKOUT" onPress={()=>props.navigation.navigate("Checkout")} />
+                <GoldBtn title="CHECKOUT" onPress={()=>props.navigation.navigate("Checkout")} width={'90%'} />
             </View>
         </>
     )
