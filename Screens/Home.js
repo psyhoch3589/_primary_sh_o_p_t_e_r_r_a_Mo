@@ -2,14 +2,14 @@ import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {View , Animated , Image , StyleSheet , Text, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView, TextInput } from 'react-native';
 
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 
 
 
 
 export default function App() {
-  const socket = io("http://192.168.1.66:3000");
+  // const socket = io("http://192.168.1.66:3000");
   const [k,setK]=React.useState(0);
   const [horizontall , setHorizontal]=React.useState();
   const [item , setItem]=React.useState();
@@ -34,7 +34,7 @@ export default function App() {
     const data={
       key:0
     }
-    fetch('http://192.168.1.7/api.php', {
+    fetch('http://192.168.101.36/ApiMobile.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,8 +44,8 @@ export default function App() {
       .then((response) => response.json())
       .then((data) => {
         // if(data[0].id){
-        setDataPost(data)
-        setTest(1)
+        // setDataPost(data)
+        // setTest(1)
         // else setTest(0);
       })
       .catch((error) => {
@@ -64,18 +64,20 @@ export default function App() {
         </View>
     );
 }
-const CategoryItems=(item)=>{
+const CategoryItems=(props)=>{
   return(
-  <View style={styles.item}>
-    <Text style={{color:"#fff"}}>{item}</Text>
-  </View>);
+    <TouchableOpacity>
+      <View style={styles.item}>
+        <Text style={{color:"black"}}>{props.title}</Text>
+      </View>
+    </TouchableOpacity>);
 }
-const Article =(title,price,key)=>{
+const Article =(props)=>{
   return(
-    <View style={styles.Article} key={key}>
+    <View style={styles.Article} key={props.key}>
       <Image source={require("../assets/cartoon.png")} style={styles.ArticlePhoto} />
-      <Text>{title}</Text>
-      <Text>{price}</Text>
+      <Text>{props.title}</Text>
+      <Text>{props.price}</Text>
     </View>
   );
 }
@@ -89,44 +91,27 @@ const Article =(title,price,key)=>{
             </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.Panel}>
+      {/* <View style={styles.Panel}>
         <Image source={require("../assets/blackfriday.jpg")} style={{height:150,width:'100%',borderRadius:10}}/>
-      </View>
+      </View> */}
+      <Text style={styles.findYourStyle}>Find your style</Text>
       <View style={styles.category}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <CategoryItems title='All'/>
+          <CategoryItems title='Top'/>
+          <CategoryItems title='Category'/>
+          <CategoryItems title='Recommandation'/>
+          <CategoryItems title='Category2'/>
+        </ScrollView>
+      </View>
         <ScrollView horizontal={true}>
-        {CategoryItems("All")}
-        {CategoryItems("Top")}
-        {CategoryItems("Category")}
-        {CategoryItems("Category2")}
-        {CategoryItems("Recommandation")}
+      {/* <View style={styles.ArticleSection}> */}
+            <Article title='Jeans' price='$200'/>
+            <Article title='Jeans' price='$200'/>
+            <Article title='Jeans' price='$200'/>
+            <Article title='Jeans' price='$200'/>
+      {/* </View> */}
         </ScrollView>
-      </View>
-      <View style={styles.ArticleSection}>
-        <ScrollView>
-          <View style={{flexDirection:'row', justifyContent:'space-around',marginBottom:244}}>
-            <View style={styles.LeftSection}>
-              {
-                test==1 ? DataItem.map((item,index)=>{
-                  if(index%2==0){
-                  return(
-                    Article(item.title,item.cost,index)
-                  )}
-                }):false
-              }
-            </View>
-            <View style={styles.RightSection}>
-            {
-                test==1 ? DataItem.map((item,index)=>{
-                  if(index%2!=0){
-                  return(
-                    Article(item.title,item.cost,index)
-                  )}
-                }):false
-              }
-            </View>
-          </View>
-        </ScrollView>
-      </View>
     </SafeAreaView>
   );
 }
@@ -134,7 +119,7 @@ const Article =(title,price,key)=>{
 const styles = StyleSheet.create({
   container: {
     height:'100%',
-    backgroundColor:'#E5E5E5'
+    // backgroundColor:'#E5E5E5'
   },
   header: {
     height:50,
@@ -164,13 +149,11 @@ const styles = StyleSheet.create({
   shareIcon: {
     height:'80%'
   },
-  Panel: {
-    height:150,
-    width:'92%',
+  findYourStyle: {
+    fontWeight:'bold',
+    fontSize:25,
     marginLeft:'4%',
-    borderRadius:10,
-    marginTop:15,
-    backgroundColor:'#D9D9D9'
+    marginTop:20
   },
   category: {
     height:40,
@@ -184,16 +167,17 @@ const styles = StyleSheet.create({
     borderRadius:10,
     padding:10,
     marginLeft:10,
-    backgroundColor:'#D9D9D9'
+    backgroundColor:'#fff'
   },
   ArticleSection: {
-    width:'100%',
-    marginTop:10,
-    // flexDirection:'row',
-    // justifyContent:'space-around'
+    // height:40,
+    marginTop:20,
+    // flexDirection:'row'
   },
   Article: {
-    // flexDirection:'row',
+    width:'20%',
+    backgroundColor:'red',
+    marginRight:10
   },
   ArticlePhoto: {
     height:228,

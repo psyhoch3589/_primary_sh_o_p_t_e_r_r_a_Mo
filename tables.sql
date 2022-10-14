@@ -1,0 +1,2 @@
+-- create table Cart(id int AUTO_INCREMENT, idClient int not Null, idArticle int not Null,quantity int not null,
+--     PRIMARY KEY (id),FOREIGN KEY (idArticle) REFERENCES articles(id))

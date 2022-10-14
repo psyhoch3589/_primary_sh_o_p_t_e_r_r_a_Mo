@@ -5,7 +5,7 @@ import ProductsReview from '../Components/ProductsReview';
 import { Images } from '../dataForTest';
 
 
-export default App=()=>{
+export default App=(props)=>{
     return(
         <>
         <SafeAreaView style={styles.navigator}>
@@ -57,7 +57,7 @@ export default App=()=>{
                 <Text style={{fontWeight:'bold',fontSize:20}}>$9,800</Text>
             </View>
         </View>
-        <GoldBtn title="PLACE ORDER" width={'90%'}/>
+        <GoldBtn title="PLACE ORDER" width={'90%'} onPress={()=>props.navigation.navigate('PayementSuccessful')}/>
         </>
     )
 }
@@ -138,7 +138,7 @@ const styles=StyleSheet.create({
     BankCard: {
         height:50,
         width:'97%',
-        marginLeft:'1.5%',
+        // marginLeft:'1%',
         borderWidth:1,
         borderColor:'black',
         borderRadius:8,
