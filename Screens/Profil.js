@@ -1,48 +1,51 @@
-import * as React from 'react';
-import { View , Text , StyleSheet, SafeAreaView, ScrollView, TouchableOpacity,Image } from 'react-native';
-import ItemOnCart from '../Components/ItemOnCart';
-import { Images } from '../dataForTest';
+import React, { useState } from 'react';
+import { BottomSheet, Button, ListItem } from '@rneui/themed';
+import { StyleSheet } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+// type BottomSheetComponentProps = {};
 
+const BottomSheetComponent = () => {
+const [isVisible, setIsVisible] = useState(false);
+const list = [
+  { title: 'List Item 1' },
+  { title: 'List Item 2' },
+  {
+    title: 'Cancel',
+    containerStyle: { backgroundColor: 'red' },
+    titleStyle: { color: 'white' },
+    onPress: () => setIsVisible(false),
+  },
+];
 
-export default App=()=>{
-    const [DataCart,setDataCart] = React.useState();
-    const [test,setTest] = React.useState(0);
-    React.useEffect(()=>{
-        fetchCartData()
-    },[])
-    const fetchCartData=()=>{
-        const data={
-            key:0
-        }
-        fetch('http://192.168.101.36/shopterra/ApiMobile.php', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data),
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            setDataCart(data)
-            setTest(1)
-            // console.log("ok")
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        });
-    }  
-    return(
-        <>
-        <SafeAreaView>
-            <View>
-                {test==1 ? DataCart.map((item,index)=>{
-                    return (<ItemOnCart Image={Images.img3} title={item.title} key={index}/>)
-                }):false}
-                {/* <ItemOnCart Image={Images.img3} title={'title'} key={2}/> */}
-            </View>
-        </SafeAreaView>
-        </>
-    )
-}
+return (
+  <SafeAreaProvider>
+    <Button
+      title="Open Bottom Sheet"
+      onPress={() => setIsVisible(true)}
+      buttonStyle={styles.button}
+    />
+    <BottomSheet modalProps={{}} isVisible={isVisible}>
+      {list.map((l, i) => (
+        <ListItem
+          key={i}
+          containerStyle={l.containerStyle}
+          onPress={l.onPress}
+        >
+          <ListItem.Content>
+            <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
+    </BottomSheet>
+  </SafeAreaProvider>
+);
+};
+
+const styles = StyleSheet.create({
+button: {
+  margin: 10,
+},
+});
+
+export default BottomSheetComponent;

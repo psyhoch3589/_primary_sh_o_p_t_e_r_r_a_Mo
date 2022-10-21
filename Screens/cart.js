@@ -6,12 +6,14 @@ import {Images} from '../dataForTest';
 // import axios from 'axios';
 
 export default App=(props)=>{
-    const [url,setUrl]=React.useState("10.72.101.145");
+    const [url,setUrl]=React.useState("10.72.103.97");
     const [DataCart,setDataCart] = React.useState();
     const [test,setTest] = React.useState(0);
+    const [testo,setTesto] = React.useState(0);
     React.useEffect(()=>{
         fetchCartData()
-    },[])
+        console.log("ok")
+    },[testo])
     const fetchCartData=()=>{
         const data={
             key:0
@@ -54,18 +56,36 @@ export default App=(props)=>{
         console.error('Error:', error);
         });
     }
+    const removeItemFromCart = (idItem)=>{
+        const data={
+            key:1,
+            id:idItem
+        }
+        fetch('http://'+url+'/Shopterra/ApiMobile.php', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if(data.status=="ok") setTesto(testo+1)
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+    }
     return(
         <>
             <SafeAreaView style={styles.navigator}>
-            {/* <TouchableOpacity onPress={()=>testt()}>
-                <Text>ok</Text>
-            </TouchableOpacity> */}
                 <Text style={styles.page_title}>My cart</Text>
             </SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.Items}>
                     {test==1 ? DataCart.map((item,index)=>{
-                        return (<ItemOnCart Image={Images.img3} title={item.title} key={index}/>)
+                        return (<ItemOnCart Image={Images.img3} removeItemFromCart={()=>removeItemFromCart(item.id)} title={item.title} idArticle={item.id} key={index}/>)
                     }):false}
                 </View>
             </ScrollView>

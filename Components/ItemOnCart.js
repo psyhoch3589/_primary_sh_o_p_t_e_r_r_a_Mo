@@ -43,7 +43,7 @@ export default App=(props)=>{
                     }}>
                             <Image source={require("../assets/minus.png")} style={styles.AddRemoveItem}/>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={props.removeItemFromCart}>
                             <Image source={require("../assets/close.png")} style={styles.CloseItem}/>
                         </TouchableOpacity>
                 </View>

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {View , Animated , Image , StyleSheet , Text, TouchableOpacity, ImageBackground, SafeAreaView, ScrollView, TextInput } from 'react-native';
-
+import {styles} from '../Style/HomeCSS';
+import {Images} from '../dataForTest';
 // import { io } from "socket.io-client";
 
 
@@ -9,6 +10,8 @@ import {View , Animated , Image , StyleSheet , Text, TouchableOpacity, ImageBack
 
 
 export default function App() {
+  const [url,setUrl]=React.useState("10.72.103.97");
+  // const [imagePath,setImagePath]=React.useState(require(Images.img11));
   // const socket = io("http://192.168.1.66:3000");
   const [k,setK]=React.useState(0);
   const [horizontall , setHorizontal]=React.useState();
@@ -17,24 +20,17 @@ export default function App() {
   const [DataItem,setDataPost]=React.useState();
   const [test,setTest]=React.useState(0);
 
-  // React.useEffect(()=>{
-  //   socket.on('item', ([arg1,arg2]) => {
-  //     setItem(arg1);
-  //     setPrice(arg2);
-  //   });
-  //   return () => {
-  //     socket.off("Scroll Direction");
-  //   };
-  // },[]);
+  
+  // useEffect
   React.useEffect(()=>{
-    fetchDataItem()
+    // console.log(Images.img11);
   },[])
 
   const fetchDataItem = ()=>{
     const data={
       key:0
     }
-    fetch('http://192.168.101.36/ApiMobile.php', {
+    fetch('http://'+url+'/ApiMobile.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -43,27 +39,11 @@ export default function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // if(data[0].id){
-        // setDataPost(data)
-        // setTest(1)
-        // else setTest(0);
       })
       .catch((error) => {
         console.error('Error:', error);
       });
   }
-
-  const Artist=()=>{
-    return(
-        <View style={styles.ArtisteSection}>
-            <TouchableOpacity >
-                <Image style={styles.ArtisteSectionImage} source={require("../assets/cartoon.png")} />
-            </TouchableOpacity>
-            <Text style={styles.ArtisteSectionText}>cartoon</Text>
-            <Text style={styles.ArtisteSectionTextStatus}>Artist</Text>
-        </View>
-    );
-}
 const CategoryItems=(props)=>{
   return(
     <TouchableOpacity>
@@ -75,28 +55,46 @@ const CategoryItems=(props)=>{
 const Article =(props)=>{
   return(
     <View style={styles.Article} key={props.key}>
-      <Image source={require("../assets/cartoon.png")} style={styles.ArticlePhoto} />
-      <Text>{props.title}</Text>
-      <Text>{props.price}</Text>
+      <Image source={props.source} style={styles.ArticlePhoto} />
+      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+        <Text style={styles.itemTitle}>{props.title}</Text>
+        <Text style={styles.itemPrice}>{props.price}</Text>
+      </View>
+      <Text style={styles.itemDescription}>{props.description}</Text>
+    </View>
+  );
+}
+const ArticleRecentlyViewed = (props) =>{
+  return(
+    <View style={styles.RecentArticle} key={props.key}>
+      <Image source={props.source} style={styles.RecentArticlePhoto} />
+        <Text style={styles.RecentitemTitle}>{props.title}</Text>
+      <Text style={styles.RecentitemDescription}>{props.description}</Text>
+      <View style={{flexDirection:'row',alignItems:'center',marginTop:10}}>
+        <Text style={styles.RecentitemPrice}>{props.price}</Text>
+        <TouchableOpacity style={styles.AddItemBtn}>
+          <Image source={require("../assets/plus.png")} style={styles.AddItemIcon} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TextInput placeholder='search an item ...' style={styles.search} />
-        <View style={styles.share}>
-            <TouchableOpacity>
-                <Image source={require("../assets/share.png")} style={styles.shareIcon}/>
-            </TouchableOpacity>
-        </View>
+        <Text style={styles.logo}>test<Text style={{fontSize:40,fontWeight:'bold',color:'orange'}}>.</Text></Text>
+        <TouchableOpacity>
+          <Image source={require("../assets/menu.png")} style={styles.menuIcon} />
+        </TouchableOpacity>
       </View>
-      {/* <View style={styles.Panel}>
-        <Image source={require("../assets/blackfriday.jpg")} style={{height:150,width:'100%',borderRadius:10}}/>
-      </View> */}
-      <Text style={styles.findYourStyle}>Find your style</Text>
+      {/* <Text style={styles.findYourStyle}>Find your style</Text> */}
       <View style={styles.category}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <TouchableOpacity>
+          <View style={styles.item}>
+              <Image source={require("../assets/filter.png")} style={styles.filterIcon}/>
+          </View>
+        </TouchableOpacity>
           <CategoryItems title='All'/>
           <CategoryItems title='Top'/>
           <CategoryItems title='Category'/>
@@ -104,87 +102,31 @@ const Article =(props)=>{
           <CategoryItems title='Category2'/>
         </ScrollView>
       </View>
-        <ScrollView horizontal={true}>
-      {/* <View style={styles.ArticleSection}> */}
-            <Article title='Jeans' price='$200'/>
-            <Article title='Jeans' price='$200'/>
-            <Article title='Jeans' price='$200'/>
-            <Article title='Jeans' price='$200'/>
-      {/* </View> */}
-        </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+          <Text style={{marginLeft:'2%',fontWeight:'bold',fontSize:20}}>Hot Sales</Text>
+          <TouchableOpacity style={styles.ShowMoreBtn}>
+            <Text>Show more</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.ArticleSection}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{marginLeft:10}}>
+          <Article title={Images.title1} description={Images.description1} price='$200' source={Images.img11}/>
+          <Article title={Images.title2} description={Images.description2} price='$200' source={Images.img12}/>
+          <Article title={Images.title3} description={Images.description3} price='$200' source={Images.img13}/>
+          </ScrollView>
+        </View>
+        <Text style={{marginLeft:'2%',fontWeight:'bold',fontSize:20,marginTop:20}}>Recently viewed</Text>
+        <View style={styles.ArticleRecentSection}>
+            <ArticleRecentlyViewed title={Images.title1} description={Images.description1} price='$200' source={Images.img11}/>
+            <ArticleRecentlyViewed title={Images.title1} description={Images.description1} price='$200' source={Images.img11}/>
+            <ArticleRecentlyViewed title={Images.title1} description={Images.description1} price='$200' source={Images.img11}/>
+            <ArticleRecentlyViewed title={Images.title1} description={Images.description1} price='$200' source={Images.img11}/>
+            <ArticleRecentlyViewed title={Images.title1} description={Images.description1} price='$200' source={Images.img11}/>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    height:'100%',
-    // backgroundColor:'#E5E5E5'
-  },
-  header: {
-    height:50,
-    width:'90%',
-    marginLeft:'5%',
-    flexDirection:'row',
-    // backgroundColor:'red',
-    justifyContent:'center',
-    alignItems:'center'
-  },
-  search: {
-    width:'85%',
-    height:'100%',
-    backgroundColor:'#fff',
-    borderRadius:10,
-    paddingLeft:10
-  },
-  share: {
-    backgroundColor:'#D9D9D9',
-    borderRadius:10,
-    marginLeft:5,
-    height:'100%',
-    justifyContent:'center',
-    alignItems:'center',
-    height:'100%',
-  },
-  shareIcon: {
-    height:'80%'
-  },
-  findYourStyle: {
-    fontWeight:'bold',
-    fontSize:25,
-    marginLeft:'4%',
-    marginTop:20
-  },
-  category: {
-    height:40,
-    marginTop:20,
-    marginLeft:'2%',
-    flexDirection:'row'
-    // backgroundColor:'red'
-  },
-  item: {
-    height:40,
-    borderRadius:10,
-    padding:10,
-    marginLeft:10,
-    backgroundColor:'#fff'
-  },
-  ArticleSection: {
-    // height:40,
-    marginTop:20,
-    // flexDirection:'row'
-  },
-  Article: {
-    width:'20%',
-    backgroundColor:'red',
-    marginRight:10
-  },
-  ArticlePhoto: {
-    height:228,
-    width:162,
-    borderRadius:28
-  },
-  RightSection: {
-    marginTop:40
-  }
-});
+
